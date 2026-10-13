@@ -325,7 +325,7 @@ export default function OptimizerClient() {
             <span className="crumb">Laptop setup guide</span>
           </div>
           <div className="top-actions">
-            <span className={`sync sync-${sync}`} aria-live="polite"><i /><span className="sync-text">{syncLabel}</span></span>
+            <span className={`sync sync-${sync}`} aria-live="polite"><span className="sync-text">{syncLabel}</span></span>
           </div>
         </div>
       </header>

@@ -33,10 +33,6 @@ button { color: inherit; font: inherit; -webkit-tap-highlight-color: transparent
 .crumb { margin-left: 14px; padding-left: 14px; border-left: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 600; white-space: nowrap; }
 .top-actions { display: flex; align-items: center; gap: 8px; }
 .sync { display: inline-flex; align-items: center; gap: 7px; margin-right: 6px; color: var(--muted); font-size: 11px; font-weight: 600; white-space: nowrap; }
-.sync i { width: 7px; height: 7px; flex: none; border-radius: 50%; background: #7fb069; box-shadow: 0 0 0 3px rgba(127, 176, 105, .18); }
-.sync-saving i, .sync-loading i { background: #d9b44a; box-shadow: 0 0 0 3px rgba(217, 180, 74, .2); animation: pulse 1s ease-in-out infinite; }
-.sync-error i { background: #d9714f; box-shadow: 0 0 0 3px rgba(217, 113, 79, .2); }
-@keyframes pulse { 50% { opacity: .35; } }
 .ghost-btn { height: 34px; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px; border: 1px solid var(--line); border-radius: 2px; background: var(--card); cursor: pointer; font-size: 12px; font-weight: 700; white-space: nowrap; transition: border-color .2s ease, background .2s ease; }
 .ghost-btn svg { width: 15px; height: 15px; flex: none; }
 .ghost-btn:hover:not(:disabled) { border-color: var(--line-strong); background: #eef1ea; }
