@@ -66,14 +66,6 @@ function ChevronIcon() {
   return <svg aria-hidden="true" viewBox="0 0 20 20" fill="none"><path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
-function LinkIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 20 20" fill="none"><path d="M8.5 11.5a3.5 3.5 0 0 0 5 0l2.5-2.5a3.5 3.5 0 0 0-5-5L10 5M11.5 8.5a3.5 3.5 0 0 0-5 0L4 11a3.5 3.5 0 0 0 5 5l1-1" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>;
-}
-
-function ResetIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 20 20" fill="none"><path d="M4 10a6 6 0 1 0 1.8-4.3M4 3.5v3.2h3.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-}
-
 function CodeChip({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
   const copy = (event: MouseEvent<HTMLButtonElement>) => {
@@ -102,7 +94,6 @@ export default function OptimizerClient() {
   const [visitorId, setVisitorId] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const [sync, setSync] = useState<SyncState>("loading");
-  const [linkCopied, setLinkCopied] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [tocOpen, setTocOpen] = useState(false);
   const lastSaved = useRef("");
@@ -322,29 +313,6 @@ export default function OptimizerClient() {
     setOpenTasks(firstOpenTask(next, completed));
   };
 
-  const resetProgress = () => {
-    if (!window.confirm("Clear every checked step in all lanes? This can't be undone.")) return;
-    setCompleted([]);
-    setOpenTasks(firstOpenTask(profile, []));
-  };
-
-  const copyLink = () => {
-    if (!visitorId) return;
-    const link = `${window.location.origin}${window.location.pathname}?plan=${visitorId}`;
-    const fallback = () => window.prompt("Copy this link to continue on another device:", link);
-    if (!navigator.clipboard) {
-      fallback();
-      return;
-    }
-    void navigator.clipboard
-      .writeText(link)
-      .then(() => {
-        setLinkCopied(true);
-        window.setTimeout(() => setLinkCopied(false), 1800);
-      })
-      .catch(fallback);
-  };
-
   const syncLabel = { loading: "Loading progress…", saving: "Saving…", saved: "Progress saved", error: "Saved on this device" }[sync];
 
   return (
@@ -357,12 +325,6 @@ export default function OptimizerClient() {
           </div>
           <div className="top-actions">
             <span className={`sync sync-${sync}`} aria-live="polite"><i /><span className="sync-text">{syncLabel}</span></span>
-            <button type="button" className="ghost-btn" onClick={copyLink} disabled={!visitorId} title="Copy a link that opens your progress on another device">
-              <LinkIcon /><span className="btn-label">{linkCopied ? "Link copied" : "Resume link"}</span>
-            </button>
-            <button type="button" className="ghost-btn" onClick={resetProgress} title="Clear all progress">
-              <ResetIcon /><span className="btn-label">Reset</span>
-            </button>
           </div>
         </div>
       </header>
