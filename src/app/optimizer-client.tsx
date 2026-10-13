@@ -5,7 +5,6 @@ import { getPhases, profiles, taskIndex, type Impact, type Profile, type Task } 
 import SectionVideo from "./SectionVideo";
 
 type Filter = Impact | "All";
-type SyncState = "loading" | "saving" | "saved" | "error";
 type LocalState = { visitorId?: string; profile?: unknown; completed?: unknown; dirty?: boolean };
 
 const VISITOR_KEY = "optiset-visitor";
@@ -94,7 +93,6 @@ export default function OptimizerClient() {
   const [filter, setFilter] = useState<Filter>("All");
   const [visitorId, setVisitorId] = useState("");
   const [hydrated, setHydrated] = useState(false);
-  const [sync, setSync] = useState<SyncState>("loading");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [tocOpen, setTocOpen] = useState(false);
   const lastSaved = useRef("");
@@ -217,18 +215,14 @@ export default function OptimizerClient() {
 
     if (snapshot === lastSaved.current) {
       persistLocal(false);
-      setSync("saved");
       return;
     }
 
-    if (apiOffline) {
-      // No backend (static host): local save already done, nothing to sync.
-      setSync("saved");
-      return;
-    }
-
+    // Save to this device first — always. The server sync below is optional.
     persistLocal(true);
-    setSync("saving");
+
+    if (apiOffline) return;
+
     const timer = window.setTimeout(() => {
       fetch("/api/plans", {
         method: "POST",
@@ -238,14 +232,10 @@ export default function OptimizerClient() {
         .then((response) => {
           if (!response.ok) throw new Error("save failed");
           lastSaved.current = snapshot;
-          if (latest.current === snapshot) {
-            persistLocal(false);
-            setSync("saved");
-          }
+          if (latest.current === snapshot) persistLocal(false);
         })
         .catch(() => {
           apiOffline = true;
-          if (latest.current === snapshot) setSync("saved");
         });
     }, 650);
     return () => window.clearTimeout(timer);
@@ -314,8 +304,6 @@ export default function OptimizerClient() {
     setOpenTasks(firstOpenTask(next, completed));
   };
 
-  const syncLabel = { loading: "Loading progress…", saving: "Saving…", saved: "Progress saved", error: "Saved on this device" }[sync];
-
   return (
     <div className="app" id="top">
       <header className="topbar">
@@ -323,9 +311,6 @@ export default function OptimizerClient() {
           <div className="topbar-left">
             <a className="brand" href="#top" aria-label="OptiSet, back to top"><span className="brand-mark"><i /><i /><i /></span>optiset</a>
             <span className="crumb">Laptop setup guide</span>
-          </div>
-          <div className="top-actions">
-            <span className={`sync sync-${sync}`} aria-live="polite"><span className="sync-text">{syncLabel}</span></span>
           </div>
         </div>
       </header>
