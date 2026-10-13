@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { getPhases, profiles, taskIndex, type Impact, type Profile, type Task } from "./setup-data";
+import SectionVideo from "./SectionVideo";
 
 type Filter = Impact | "All";
 type SyncState = "loading" | "saving" | "saved" | "error";
@@ -482,6 +483,7 @@ export default function OptimizerClient() {
                               );
                             })}
                           </ol>
+                          <SectionVideo taskId={task.id} />
                           {task.macos && <div className="task-note mac"><b>On macOS</b><p><Rich text={task.macos} /></p></div>}
                           {task.caution && <div className="task-note caution"><b>Heads up</b><p><Rich text={task.caution} /></p></div>}
                           {task.tools && (
