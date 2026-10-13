@@ -1,55 +1,28 @@
 # OptiSet — Laptop Performance Optimization Hub
 
-A step-by-step laptop setup and optimization guide. Pick the lane that matches how you use your laptop — Everyday, Gaming, Creator, or AI/Dev — then work through the checklist top to bottom, checking off steps as you go.
+Your laptop setup guide, step by step. Whether your laptop is brand new or has been slowing down for months, OptiSet walks you through exactly what to do — in plain language, one checked box at a time.
 
-**Live site:** https://hazimzes.github.io/laptop-performance-optimization-hub/
+**Open the guide:** https://hazimzes.github.io/laptop-performance-optimization-hub/
 
-## What it does
+## How it works
 
-- **36 guided tasks** across 4 usage profiles, each with numbered steps, why-it-matters notes, macOS alternatives, and copy-on-click terminal commands.
-- **Progress tracking** that saves automatically to the browser. On the static GitHub Pages deployment, progress is stored in localStorage (per device). When deployed to a server with the included API routes and a PostgreSQL database, progress syncs across devices.
-- **Video guide per section** — a curated YouTube tutorial embedded in each task card, with an animated click-path walkthrough as a fallback.
-- **No account, no tracking** — the static site is pure HTML/JS served from GitHub Pages.
+1. **Pick your lane.** Tell OptiSet how you use your laptop — Everyday (school, office, browsing), Gaming (frames, thermals, input), Creator (photo, video, design), or AI/Dev (code, containers, local AI). You only see the steps that matter for you.
+2. **Work top to bottom.** Every task is broken into short numbered steps with a "why it matters" note, rough time estimate, and an impact label so you know what's essential versus nice-to-have.
+3. **Check off as you go.** Your progress bar fills up as you complete steps, and remaining time updates live so you always know what's left.
+4. **Come back anytime.** Your progress saves automatically on your device. Close the tab, come back tomorrow — your checklist is exactly where you left it.
 
-## Tech stack
+## What's inside
 
-- [Next.js](https://nextjs.org) (App Router) + React + TypeScript
-- Tailwind CSS v4
-- Drizzle ORM + PostgreSQL (optional, for the cross-device sync API)
-- GitHub Actions deployment to GitHub Pages (static export)
+- **36 guided tasks** covering everything from getting through Windows setup cleanly, removing bloatware, and cutting startup apps, to tuning refresh rate and HDR, forcing games onto the dedicated GPU, setting up backups, and building a maintenance routine.
+- **A video guide for every task** — each section includes a curated YouTube tutorial you can play right on the page, so you can watch the steps instead of just reading them.
+- **macOS notes** where steps differ on a Mac.
+- **Copy-on-click commands** — any terminal command in the guide copies to your clipboard with one click.
+- **Safety callouts** — steps that could cause trouble (like registry edits or disabling services) come with a clear warning first.
 
-## Development
+## Nothing to install
 
-Requires Node.js 22+.
+OptiSet runs entirely in your browser. No account, no download, no tracking — open the link and start optimizing.
 
-```bash
-npm install
-npm run dev      # start dev server at http://localhost:3000
-npm run build    # production build (server mode)
-npm run lint     # eslint
-npm run typecheck
-```
+---
 
-For the optional plan-sync API, set `DATABASE_URL` in `.env` and apply the schema with `npx drizzle-kit push`.
-
-### Static export (GitHub Pages)
-
-The Pages workflow (`.github/workflows/deploy-pages.yml`) builds with `BUILD_TARGET=pages`, which switches `next.config.ts` to static export mode (`output: "export"`, basePath set to the repo name). In this mode the API routes are excluded and the client falls back to localStorage-only persistence.
-
-## Project structure
-
-```
-src/
-  app/
-    page.tsx               # home page (renders the client app)
-    optimizer-client.tsx   # main interactive checklist
-    setup-data.ts          # all task/step content
-    video-map.ts           # curated video per section
-    SectionVideo.tsx       # YouTube embed + animated fallback
-    api/plans/route.ts     # plan sync API (server deploys only)
-  db/                      # Drizzle schema and client
-```
-
-## License
-
-All rights reserved. Video content remains the property of the respective YouTube creators and is embedded via YouTube's standard embed player.
+*Video guides are embedded from YouTube and remain the property of their respective creators.*
